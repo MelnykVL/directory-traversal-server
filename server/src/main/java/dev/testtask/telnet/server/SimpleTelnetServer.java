@@ -1,6 +1,6 @@
 package dev.testtask.telnet.server;
 
-import dev.testtask.telnet.exception.TelnetServerStartupException;
+import dev.testtask.telnet.exception.SocketTelnetServerSetupException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -19,12 +19,12 @@ public class SimpleTelnetServer {
     public void setup() {
         try {
             this.serverSocket = new ServerSocket(this.port);
-        } catch (IOException e) {
-            throw new TelnetServerStartupException("Unable startup server.", e);
+        } catch (IOException ex) {
+            throw new SocketTelnetServerSetupException(ex);
         }
     }
 
     public void start() {
-
+        this.setup();
     }
 }

@@ -2,6 +2,7 @@ package dev.testtask.telnet.handler;
 
 import dev.testtask.telnet.model.SearchSetting;
 import dev.testtask.telnet.service.SearchService;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,7 +10,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 @Slf4j
 public class ClientRequestHandler implements Runnable {
@@ -22,6 +22,7 @@ public class ClientRequestHandler implements Runnable {
     this.searchService = searchService;
   }
 
+  @SneakyThrows
   @Override
   public void run() {
     try (BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -50,10 +51,6 @@ public class ClientRequestHandler implements Runnable {
       }
     } catch (IOException e) {
       log.error("Unexpected IO exception.", e);
-    } catch (ExecutionException e) {
-      throw new RuntimeException(e);
-    } catch (InterruptedException e) {
-      throw new RuntimeException(e);
     }
   }
 

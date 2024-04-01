@@ -5,8 +5,8 @@ import dev.testtask.telnet.service.SearchService;
 
 public class ServerApplication {
 
-    public static void main(String[] args) {
-        SimpleTelnetServer simpleTelnetServer = new SimpleTelnetServer(8081, new SearchService());
-        simpleTelnetServer.start();
-    }
+  public static void main(String[] args) {
+    SimpleTelnetServer simpleTelnetServer = new SimpleTelnetServer(8081, new SearchService());
+    simpleTelnetServer.start();
+  }
 }

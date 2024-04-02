@@ -4,6 +4,7 @@ import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -12,7 +13,7 @@ class SearchServiceTest {
 
   private static final String RELATIVE_PATH_TO_RESOURCES = "src/test/resources";
 
-  private final SearchService searchService = new SearchService();
+  private final SearchService searchService = new SearchService(new ReentrantLock());
 
   @Test
   @SneakyThrows

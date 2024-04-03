@@ -14,20 +14,19 @@ import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 
 @Slf4j
-public class FileSearcher implements Runnable {
+public class FileSearcher extends Thread {
 
   private final BlockingQueue<ClientRequest> blockingQueue;
 
   public FileSearcher(BlockingQueue<ClientRequest> blockingQueue) {
     this.blockingQueue = blockingQueue;
+    this.setDaemon(true);
   }
 
   @SneakyThrows
   @Override
   public void run() {
     while (true) {
-      log.info(Thread.currentThread()
-          .getName() + ": ----- FileSearcher");
       ClientRequest clientRequest = blockingQueue.take();
       Queue<File> queue = new ArrayDeque<>();
       SearchSetting searchSetting = clientRequest.searchSetting();

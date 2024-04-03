@@ -17,7 +17,7 @@ class SearchServiceTest {
 
   @Test
   @SneakyThrows
-  void search_givenNonExistentPath_shouldReturnEmptyList() {
+  void search_GivenNonExistentPath_ShouldReturnEmptyList() {
     String absolutePathToResources = Path.of(RELATIVE_PATH_TO_RESOURCES)
         .toFile()
         .getAbsolutePath();
@@ -28,7 +28,7 @@ class SearchServiceTest {
 
   @Test
   @SneakyThrows
-  void search_GivenExistentPathWithDepthTwoAndMaskDir_ShouldListWithTwoDirs() {
+  void search_GivenExistentPathWithDepthTwoAndMaskDir_ShouldReturnListWithTwoDirs() {
     String absolutePathToResources = Path.of(RELATIVE_PATH_TO_RESOURCES)
         .toFile()
         .getAbsolutePath();
@@ -39,7 +39,7 @@ class SearchServiceTest {
 
   @Test
   @SneakyThrows
-  void search_GivenExistentPathWithDepthTwoAndMaskTest_ShouldListWithTwoFiles() {
+  void search_GivenExistentPathWithDepthTwoAndMaskTest_ShouldReturnListWithTwoFiles() {
     String absolutePathToResources = Path.of(RELATIVE_PATH_TO_RESOURCES)
         .toFile()
         .getAbsolutePath();

@@ -1,7 +1,7 @@
 package dev.testtask.telnet.handler;
 
+import dev.testtask.telnet.model.ClientRequest;
 import dev.testtask.telnet.model.SearchSetting;
-import dev.testtask.telnet.service.SearchService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import java.io.BufferedReader;
@@ -9,17 +9,18 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.List;
+import java.util.concurrent.BlockingQueue;
 
 @Slf4j
-public class ClientRequestHandler implements Runnable {
+public class ClientRequestHandler extends Thread {
 
   private final Socket clientSocket;
-  private final SearchService searchService;
+  private final BlockingQueue<ClientRequest> blockingQueue;
 
-  public ClientRequestHandler(Socket clientSocket, SearchService searchService) {
+  public ClientRequestHandler(Socket clientSocket, BlockingQueue<ClientRequest> blockingQueue) {
     this.clientSocket = clientSocket;
-    this.searchService = searchService;
+    this.blockingQueue = blockingQueue;
+    this.setDaemon(true);
   }
 
   @SneakyThrows
@@ -32,15 +33,8 @@ public class ClientRequestHandler implements Runnable {
       boolean proceed = true;
       while (proceed) {
         SearchSetting searchSetting = this.askSearchSetting(reader, writer);
-
-        List<String> fileList = searchService.search(searchSetting.rootPath(), searchSetting.depth(),
-                searchSetting.mask())
-            .get();
-
-        fileList.forEach((f) -> {
-          writer.println(f);
-          writer.println("\r");
-        });
+        ClientRequest clientRequest = new ClientRequest(writer, searchSetting);
+        blockingQueue.add(clientRequest);
 
         writer.println("To exit, type exit or press enter to proceed.\r");
         String command = reader.readLine();
